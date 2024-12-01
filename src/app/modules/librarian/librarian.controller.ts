@@ -1,74 +1,49 @@
 /* eslint-disable no-console */
-import { NextFunction, Request, Response } from 'express';
 import { LibrarianServices } from './librarian.service';
 import { StatusCodes } from 'http-status-codes';
 import sendResponse from '../../../utils/sendResponse';
+import catchAsync from '../../../utils/catchAsync';
 
-const getAllLibrarians = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const result = await LibrarianServices.getAllLibrariansFromDB();
+const getAllLibrarians = catchAsync(async (req, res) => {
+  const result = await LibrarianServices.getAllLibrariansFromDB();
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Librarians retrieved successfully',
+    data: result,
+  });
+});
 
-    res.status(200).json({
-      success: true,
-      message: 'Librarians retrieved successfully',
-      data: result,
-    });
+const getSingleLibrarian = catchAsync(async (req, res) => {
+  const { librarianId } = req.params;
+  const result = await LibrarianServices.getSingleLibrarianFromDB(librarianId);
 
-    sendResponse(res, {
-      success: true,
-      statusCode: StatusCodes.OK,
-      message: 'Librarians retrieved successfully',
-      data: result,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  result == null
+    ? sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.NOT_FOUND,
+        message: 'ID not found',
+        data: result,
+      })
+    : sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Librarian retrieved successfully',
+        data: result,
+      });
+});
 
-const getSingleLibrarian = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const { librarianId } = req.params;
-    const result =
-      await LibrarianServices.getSingleLibrarianFromDB(librarianId);
+const deleteLibrarian = catchAsync(async (req, res) => {
+  const { librarianId } = req.params;
+  const result = await LibrarianServices.deleteLibrarianFromDB(librarianId);
 
-    sendResponse(res, {
-      success: true,
-      statusCode: StatusCodes.OK,
-      message: 'Librarian retrieved successfully',
-      data: result,
-    });
-  } catch (error: any) {
-    next(error);
-  }
-};
-
-const deleteLibrarian = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const { librarianId } = req.params;
-    const result = await LibrarianServices.deleteLibrarianFromDB(librarianId);
-
-    sendResponse(res, {
-      success: true,
-      statusCode: StatusCodes.OK,
-      message: 'Librarian Deleted successfully',
-      data: result,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Librarian Deleted successfully',
+    data: result,
+  });
+});
 
 export const LibrarianController = {
   getAllLibrarians,

@@ -3,7 +3,7 @@ import { LibrarianController } from './librarian.controller';
 
 const router = express.Router();
 
-router.get('/librarians', LibrarianController.getAllLibrarians);
+router.get('/', LibrarianController.getAllLibrarians);
 router.get('/:librarianId', LibrarianController.getSingleLibrarian);
 router.delete('/:librarianId', LibrarianController.deleteLibrarian);
 

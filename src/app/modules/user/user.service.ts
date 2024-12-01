@@ -1,3 +1,4 @@
+import generateUniqueId from '../../../utils/generateUniqueId';
 import config from '../../config';
 import { TLibrarian } from '../librarian/librarian.interface';
 import { LibrarianModel } from '../librarian/librarian.model';
@@ -15,7 +16,7 @@ const createLibrarianIntoDB = async (
   // set librarian role
   userData.role = 'librarian';
 
-  userData.id = '202012';
+  userData.id = await generateUniqueId(userData.role as string);
   // create a user
   const newUser = await UserModel.create(userData);
   if (Object.keys(newUser).length) {
@@ -23,7 +24,7 @@ const createLibrarianIntoDB = async (
     librarianData.user = newUser._id;
 
     const newLibrarian = await LibrarianModel.create(librarianData);
-    return newUser;
+    return newLibrarian;
   }
 };
 

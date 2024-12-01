@@ -6,7 +6,8 @@ const getAllLibrariansFromDB = async () => {
 };
 
 const getSingleLibrarianFromDB = async (id: string) => {
-  const result = await LibrarianModel.find({ id });
+  const cleanedId = id.trim();
+  const result = await LibrarianModel.findOne({ id: cleanedId });
   return result;
 };
 
