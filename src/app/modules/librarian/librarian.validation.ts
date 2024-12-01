@@ -10,7 +10,6 @@ const nameValidationSchema = z.object({
 // Define the librarian schema
 const librarianValidationSchema = z.object({
   id: z.string().min(1, 'ID is Required'),
-  password: z.string().min(6, 'Password is Required'),
   name: nameValidationSchema,
   gender: z
     .enum(['male', 'female', 'other'], {

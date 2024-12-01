@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 export type TName = {
   firstName: string;
@@ -8,6 +8,7 @@ export type TName = {
 
 export type TLibrarian = {
   id: string;
+  user: Types.ObjectId;
   password: string;
   name: TName;
   email: string;
@@ -16,8 +17,7 @@ export type TLibrarian = {
   contactNo: string;
   presentAddress: string;
   permanentAddress: string;
-  profileImg: string;
-  isActive: 'active' | 'blocked';
+  profileImg?: string;
   isDeleted?: boolean;
 };
 

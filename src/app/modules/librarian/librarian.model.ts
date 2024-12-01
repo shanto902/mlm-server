@@ -1,7 +1,5 @@
 import { model, Schema } from 'mongoose';
 import { ILibrarianModel, TLibrarian, TName } from './librarian.interface';
-import bcrypt from 'bcrypt';
-import config from '../../config';
 const librarianNameSchema = new Schema<TName, ILibrarianModel>(
   {
     firstName: {
@@ -26,7 +24,12 @@ const librarianNameSchema = new Schema<TName, ILibrarianModel>(
 const librarianSchema = new Schema<TLibrarian>(
   {
     id: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'User id is required'],
+      unique: true,
+      ref: 'User',
+    },
     name: {
       type: librarianNameSchema,
       required: [true, 'Name is Required'],
@@ -54,11 +57,7 @@ const librarianSchema = new Schema<TLibrarian>(
       type: String,
       required: [true, 'Contact No is Required'],
     },
-    isActive: {
-      type: String,
-      enum: ['active', 'blocked'],
-      default: 'active',
-    },
+
     permanentAddress: {
       type: String,
       required: [true, 'Permanent Address is Required'],
@@ -86,26 +85,10 @@ const librarianSchema = new Schema<TLibrarian>(
 
 // Custom Static Method
 
-librarianSchema.pre('save', async function (next) {
-  // Hashing Password
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const librarian = this;
-  librarian.password = await bcrypt.hash(
-    librarian.password,
-    Number(config.bcrypt_salt_round),
-  );
-  next();
-});
-
 librarianSchema.statics.isUserExist = async function (id: string) {
   const existingUser = await LibrarianModel.findOne({ id });
   return existingUser;
 };
-
-librarianSchema.post('save', async function (doc, next) {
-  doc.password = 'Password saved In encrypted format';
-  next();
-});
 
 //Filtering deleted accounts
 librarianSchema.pre('find', function (next) {

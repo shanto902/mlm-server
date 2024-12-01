@@ -1,15 +1,4 @@
-import { TLibrarian } from './librarian.interface';
 import { LibrarianModel } from './librarian.model';
-
-const createLibrarianIntoDB = async (librarian: TLibrarian) => {
-  if (await LibrarianModel.isUserExist(librarian.id)) {
-    throw new Error('Librarian Already Exists');
-  }
-
-  const result = await LibrarianModel.create(librarian);
-
-  return result;
-};
 
 const getAllLibrariansFromDB = async () => {
   const result = await LibrarianModel.find();
@@ -29,7 +18,6 @@ const deleteLibrarianFromDB = async (id: string) => {
   return result;
 };
 export const LibrarianServices = {
-  createLibrarianIntoDB,
   getAllLibrariansFromDB,
   getSingleLibrarianFromDB,
   deleteLibrarianFromDB,

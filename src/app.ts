@@ -1,6 +1,8 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
-import { LibrarianRoute } from './app/modules/librarians/librarian.route';
+import globalErrorHandler from './middleware/globalErrorHandler';
+import notFound from './middleware/notFound';
+import router from './app/routes';
 
 const app: Application = express();
 
@@ -9,11 +11,15 @@ app.use(express.json());
 app.use(cors());
 
 //Application Routes
-
-app.use('/api/v1/librarians', LibrarianRoute);
+app.use('/api/v1', router);
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+  res.send('Server Working');
 });
+
+app.use(globalErrorHandler);
+
+//Not Found
+app.use(notFound);
 
 export default app;
