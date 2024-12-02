@@ -4,8 +4,17 @@ export type TBook = {
   id: string;
   title: string;
   author: string;
-  categoryId: ObjectId;
-  stock: number;
-  libraryVanId: ObjectId;
+  categories: ObjectId[];
+  description?: string;
+  libraryVans?: {
+    libraryVanId: ObjectId;
+    stock: number;
+  }[];
   price: number;
+  publishedYear?: string;
+  ISBN?: string;
+  language?: string;
+  isDeleted?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };

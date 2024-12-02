@@ -1,6 +1,8 @@
 import { model, Schema } from 'mongoose';
-import { ILibrarianModel, TLibrarian, TName } from './librarian.interface';
-const librarianNameSchema = new Schema<TName, ILibrarianModel>(
+import { TLibrarian, TName } from './librarian.interface';
+import AppError from '../../../middleware/appError';
+import { StatusCodes } from 'http-status-codes';
+const librarianNameSchema = new Schema<TName>(
   {
     firstName: {
       type: String,
@@ -90,17 +92,38 @@ librarianSchema.statics.isUserExist = async function (id: string) {
   return existingUser;
 };
 
+librarianSchema.pre('save', async function (next) {
+  const isLibrarianExist = await LibrarianModel.findOne({
+    email: this.email,
+  });
+
+  if (isLibrarianExist) {
+    throw new AppError(StatusCodes.FORBIDDEN, 'This email already used');
+  }
+  next();
+});
+
 //Filtering deleted accounts
 librarianSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
 
+librarianSchema.post('findOne', function (result, next) {
+  if (!result) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'ID not Found');
+  }
+  next();
+});
+
+librarianSchema.post('findOneAndUpdate', function (result, next) {
+  if (!result) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'ID not Found');
+  }
+  next();
+});
 librarianSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName || ''} ${this.name.lastName}`;
 });
 
-export const LibrarianModel = model<TLibrarian, ILibrarianModel>(
-  'Librarian',
-  librarianSchema,
-);
+export const LibrarianModel = model<TLibrarian>('Librarian', librarianSchema);

@@ -1,4 +1,4 @@
-import { Model, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
 export type TName = {
   firstName: string;
@@ -20,7 +20,3 @@ export type TLibrarian = {
   profileImg?: string;
   isDeleted?: boolean;
 };
-
-export interface ILibrarianModel extends Model<TLibrarian> {
-  isUserExist(id: string): Promise<TLibrarian | null>;
-}

@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { LibrarianRoute } from '../modules/librarian/librarian.route';
 import { UserRoutes } from '../modules/user/user.route';
 import { BookRoutes } from '../modules/book/book.route';
+import { LibraryVanRoute } from '../modules/libraryVan/libraryVan.route';
+import { CategoryRoute } from '../modules/category/category.route';
 
 type TModuleRoute = {
   path: string;
@@ -21,6 +23,14 @@ const moduleRoutes: TModuleRoute[] = [
   {
     path: '/book',
     route: BookRoutes,
+  },
+  {
+    path: '/library-van',
+    route: LibraryVanRoute,
+  },
+  {
+    path: '/category',
+    route: CategoryRoute,
   },
 ];
 
