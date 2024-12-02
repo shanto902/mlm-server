@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { BookServices } from './book.service';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
+import { RequestHandler } from 'express';
 
 const addBook = catchAsync(async (req, res) => {
   const bookData = await BookServices.addBookIntoDB(req.body);
@@ -15,8 +16,8 @@ const addBook = catchAsync(async (req, res) => {
   });
 });
 
-const getAllBooks = catchAsync(async (req, res) => {
-  const booksData = await BookServices.getAllBooksFromDB();
+const getAllBooks: RequestHandler = catchAsync(async (req, res) => {
+  const booksData = await BookServices.getAllBooksFromDB(req.query);
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,

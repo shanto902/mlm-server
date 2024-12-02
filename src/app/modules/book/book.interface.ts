@@ -11,7 +11,7 @@ export type TBook = {
     stock: number;
   }[];
   price: number;
-  publishedYear?: string;
+  publishedYear?: number;
   ISBN?: string;
   language?: string;
   isDeleted?: string;
