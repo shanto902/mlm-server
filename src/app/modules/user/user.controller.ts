@@ -1,7 +1,8 @@
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
 import { UserServices } from './user.service';
-import sendResponse from '../../../utils/sendResponse';
+
 import { StatusCodes } from 'http-status-codes';
-import catchAsync from '../../../utils/catchAsync';
 
 const createLibrarian = catchAsync(async (req, res) => {
   const { password, librarian: librarianData } = req.body;

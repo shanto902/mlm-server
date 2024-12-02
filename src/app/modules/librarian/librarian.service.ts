@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 import { LibrarianModel } from './librarian.model';
-import AppError from '../../../middleware/appError';
+import AppError from '../../errors/appError';
 import { StatusCodes } from 'http-status-codes';
 import { UserModel } from '../user/user.model';
+import { TLibrarian } from './librarian.interface';
 
 const getAllLibrariansFromDB = async () => {
   const result = await LibrarianModel.find();
@@ -11,6 +12,9 @@ const getAllLibrariansFromDB = async () => {
 
 const getSingleLibrarianFromDB = async (id: string) => {
   const result = await LibrarianModel.findOne({ id });
+  if (!result) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Id not found');
+  }
   return result;
 };
 
@@ -55,8 +59,42 @@ const deleteLibrarianFromDB = async (id: string) => {
     throw new AppError(StatusCodes.BAD_REQUEST, error.message);
   }
 };
+
+const updateLibrarianFromDB = async (
+  id: string,
+  payload: Partial<TLibrarian>,
+) => {
+  const { name, ...remainingLibrarianData } = payload;
+
+  const modifiedUpdatedData: Record<string, unknown> = {
+    ...remainingLibrarianData,
+  };
+
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedUpdatedData[`name.${key}`] = value;
+    }
+  }
+  const result = await LibrarianModel.findOneAndUpdate(
+    { id },
+    modifiedUpdatedData,
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+
+  if (!result) {
+    throw new AppError(
+      StatusCodes.NOT_FOUND,
+      'Librarian not found with the given ID',
+    );
+  }
+  return result;
+};
 export const LibrarianServices = {
   getAllLibrariansFromDB,
   getSingleLibrarianFromDB,
   deleteLibrarianFromDB,
+  updateLibrarianFromDB,
 };

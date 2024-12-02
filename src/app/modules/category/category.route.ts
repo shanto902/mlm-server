@@ -1,5 +1,5 @@
 import express from 'express';
-import validateRequest from '../../../middleware/validateRequest';
+import validateRequest from '../../middleware/validateRequest';
 import { CategoryValidations } from './category.validation';
 import { CategoryControllers } from './category.controller';
 const router = express.Router();

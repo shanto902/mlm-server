@@ -1,4 +1,4 @@
-import { UserModel } from '../app/modules/user/user.model';
+import { UserModel } from '../modules/user/user.model';
 
 const generateUniqueId = async (role: string): Promise<string> => {
   // Extract the role prefix (first two letters, uppercase)

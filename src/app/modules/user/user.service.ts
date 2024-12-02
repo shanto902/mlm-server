@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
-import generateUniqueId from '../../../utils/generateUniqueId';
+
 import config from '../../config';
 import { TLibrarian } from '../librarian/librarian.interface';
 import { LibrarianModel } from '../librarian/librarian.model';
 import { TUser } from './user.interface';
 import { UserModel } from './user.model';
-import AppError from '../../../middleware/appError';
+import AppError from '../../errors/appError';
 import { StatusCodes } from 'http-status-codes';
+import generateUniqueId from '../../utils/generateUniqueId';
 
 const createLibrarianIntoDB = async (password: string, payload: TLibrarian) => {
   const userData: Partial<TUser> = {};

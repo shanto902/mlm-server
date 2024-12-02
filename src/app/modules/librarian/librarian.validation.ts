@@ -37,6 +37,42 @@ const createLibrarianValidationSchema = z.object({
   }),
 });
 
+const updateLibrarianValidationSchema = z.object({
+  body: z.object({
+    librarian: z.object({
+      name: nameValidationSchema.optional(),
+      gender: z
+        .enum(['male', 'female', 'other'], {
+          errorMap: () => ({
+            message:
+              "The gender field can only be 'male', 'female', or 'other'",
+          }),
+        })
+        .refine((value) => value !== undefined, 'Gender is Required')
+        .optional(),
+      dateOfBirth: z.string().optional(),
+      email: z
+        .string()
+        .email('Invalid email format')
+        .min(1, 'Email is Required')
+        .optional(),
+      contactNo: z.string().min(1, 'Contact No is Required').optional(),
+      permanentAddress: z
+        .string()
+        .min(1, 'Permanent Address is Required')
+        .trim()
+        .optional(),
+      presentAddress: z
+        .string()
+        .min(1, 'Present Address is Required')
+        .trim()
+        .optional(),
+      profileImg: z.string().optional(),
+    }),
+  }),
+});
+
 export const librarianValidations = {
   createLibrarianValidationSchema,
+  updateLibrarianValidationSchema,
 };

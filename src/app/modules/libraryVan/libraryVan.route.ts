@@ -1,5 +1,5 @@
 import express from 'express';
-import validateRequest from '../../../middleware/validateRequest';
+import validateRequest from '../../middleware/validateRequest';
 import { LibraryVanValidations } from './libraryVan.validation';
 import { LibraryVanControllers } from './libraryVan.controller';
 

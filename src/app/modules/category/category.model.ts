@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { TCategory } from './category.interface';
-import AppError from '../../../middleware/appError';
+import AppError from '../../errors/appError';
 import { StatusCodes } from 'http-status-codes';
 
 const categorySchema = new Schema<TCategory>(

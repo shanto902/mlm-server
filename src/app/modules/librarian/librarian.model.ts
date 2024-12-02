@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { TLibrarian, TName } from './librarian.interface';
-import AppError from '../../../middleware/appError';
+import AppError from '../../errors/appError';
 import { StatusCodes } from 'http-status-codes';
 const librarianNameSchema = new Schema<TName>(
   {
@@ -109,19 +109,6 @@ librarianSchema.pre('find', function (next) {
   next();
 });
 
-librarianSchema.post('findOne', function (result, next) {
-  if (!result) {
-    throw new AppError(StatusCodes.NOT_FOUND, 'ID not Found');
-  }
-  next();
-});
-
-librarianSchema.post('findOneAndUpdate', function (result, next) {
-  if (!result) {
-    throw new AppError(StatusCodes.NOT_FOUND, 'ID not Found');
-  }
-  next();
-});
 librarianSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName || ''} ${this.name.lastName}`;
 });

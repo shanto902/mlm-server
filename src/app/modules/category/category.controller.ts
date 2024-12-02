@@ -1,7 +1,7 @@
-import sendResponse from '../../../utils/sendResponse';
 import { StatusCodes } from 'http-status-codes';
-import catchAsync from '../../../utils/catchAsync';
 import { CategoryServices } from './category.service';
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
 
 const addCategory = catchAsync(async (req, res) => {
   const result = await CategoryServices.addCategoryIntoDb(req.body);
