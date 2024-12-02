@@ -1,10 +1,9 @@
 import { model, Schema } from 'mongoose';
-
 import AppError from '../../errors/appError';
 import { StatusCodes } from 'http-status-codes';
-import { TAdmin } from './admin.interface';
 import { TName } from '../librarian/librarian.interface';
-const adminNameSchema = new Schema<TName>(
+import { TCustomer } from './customer.interface';
+const customerNameSchema = new Schema<TName>(
   {
     firstName: {
       type: String,
@@ -25,9 +24,10 @@ const adminNameSchema = new Schema<TName>(
   { _id: false },
 );
 
-const adminSchema = new Schema<TAdmin>(
+const customerSchema = new Schema<TCustomer>(
   {
     id: { type: String, required: true, unique: true },
+    nid: { type: String, unique: true },
     user: {
       type: Schema.Types.ObjectId,
       required: [true, 'User id is required'],
@@ -35,7 +35,7 @@ const adminSchema = new Schema<TAdmin>(
       ref: 'User',
     },
     name: {
-      type: adminNameSchema,
+      type: customerNameSchema,
       required: [true, 'Name is Required'],
     },
     gender: {
@@ -89,30 +89,30 @@ const adminSchema = new Schema<TAdmin>(
 
 // Custom Static Method
 
-adminSchema.statics.isUserExist = async function (id: string) {
-  const existingUser = await AdminModel.findOne({ id });
+customerSchema.statics.isUserExist = async function (id: string) {
+  const existingUser = await CustomerModel.findOne({ id });
   return existingUser;
 };
 
-adminSchema.pre('save', async function (next) {
-  const isAdminExist = await AdminModel.findOne({
+customerSchema.pre('save', async function (next) {
+  const isCustomerExists = await CustomerModel.findOne({
     email: this.email,
   });
 
-  if (isAdminExist) {
+  if (isCustomerExists) {
     throw new AppError(StatusCodes.FORBIDDEN, 'This email already used');
   }
   next();
 });
 
 //Filtering deleted accounts
-adminSchema.pre('find', function (next) {
+customerSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
 
-adminSchema.virtual('fullName').get(function () {
+customerSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName || ''} ${this.name.lastName}`;
 });
 
-export const AdminModel = model<TAdmin>('Admin', adminSchema);
+export const CustomerModel = model<TCustomer>('Customer', customerSchema);

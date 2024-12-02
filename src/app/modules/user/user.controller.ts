@@ -20,6 +20,20 @@ const createLibrarian = catchAsync(async (req, res) => {
   });
 });
 
+const createAdmin = catchAsync(async (req, res) => {
+  const { password, admin: adminData } = req.body;
+
+  const result = await UserServices.createAdminIntoDB(password, adminData);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.CREATED,
+    message: 'Admin created successfully',
+    data: result,
+  });
+});
+
 export const UserControllers = {
   createLibrarian,
+  createAdmin,
 };

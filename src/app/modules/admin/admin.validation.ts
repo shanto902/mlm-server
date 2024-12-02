@@ -8,10 +8,10 @@ const nameValidationSchema = z.object({
 });
 
 // Define the librarian schema
-const createLibrarianValidationSchema = z.object({
+const createAdminValidationSchema = z.object({
   body: z.object({
     password: z.string().max(20),
-    librarian: z.object({
+    admin: z.object({
       name: nameValidationSchema,
       gender: z
         .enum(['male', 'female', 'other'], {
@@ -37,9 +37,9 @@ const createLibrarianValidationSchema = z.object({
   }),
 });
 
-const updateLibrarianValidationSchema = z.object({
+const updateAdminValidationSchema = z.object({
   body: z.object({
-    librarian: z.object({
+    admin: z.object({
       name: nameValidationSchema.optional(),
       gender: z
         .enum(['male', 'female', 'other'], {
@@ -72,7 +72,7 @@ const updateLibrarianValidationSchema = z.object({
   }),
 });
 
-export const LibrarianValidations = {
-  createLibrarianValidationSchema,
-  updateLibrarianValidationSchema,
+export const AdminValidations = {
+  createAdminValidationSchema,
+  updateAdminValidationSchema,
 };

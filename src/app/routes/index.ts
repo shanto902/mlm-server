@@ -4,6 +4,8 @@ import { UserRoutes } from '../modules/user/user.route';
 import { BookRoutes } from '../modules/book/book.route';
 import { LibraryVanRoute } from '../modules/libraryVan/libraryVan.route';
 import { CategoryRoute } from '../modules/category/category.route';
+import { AdminRoute } from '../modules/admin/admin.route';
+import { CustomerRoute } from '../modules/customer/customer.route';
 
 type TModuleRoute = {
   path: string;
@@ -19,6 +21,15 @@ const moduleRoutes: TModuleRoute[] = [
   {
     path: '/librarian',
     route: LibrarianRoute,
+  },
+  {
+    path: '/admin',
+    route: AdminRoute,
+  },
+
+  {
+    path: '/customer',
+    route: CustomerRoute,
   },
   {
     path: '/book',
