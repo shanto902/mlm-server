@@ -64,10 +64,10 @@ const updateCustomerFromDB = async (
   id: string,
   payload: Partial<TCustomer>,
 ) => {
-  const { name, ...remainingLibrarianData } = payload;
+  const { name, ...remainingCustomerData } = payload;
 
   const modifiedUpdatedData: Record<string, unknown> = {
-    ...remainingLibrarianData,
+    ...remainingCustomerData,
   };
 
   if (name && Object.keys(name).length) {

@@ -2,6 +2,7 @@ import express from 'express';
 import validateRequest from '../../middleware/validateRequest';
 import { BookControllers } from './book.controller';
 import { BookValidations } from './book.validation';
+import auth from '../../middleware/auth';
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.post(
   validateRequest(BookValidations.bookValidationSchema),
   BookControllers.addBook,
 );
-router.get('/', BookControllers.getAllBooks);
+router.get('/', auth(), BookControllers.getAllBooks);
 router.get('/:bookId', BookControllers.getSingleBook);
 router.delete('/:bookId', BookControllers.deleteBook);
 

@@ -1,10 +1,13 @@
 import { ObjectId } from 'mongoose';
 
+export type TBookCategory = {
+  name: string;
+};
 export type TBook = {
   id: string;
   title: string;
   author: string;
-  categories: ObjectId[];
+  categories: [TBookCategory];
   description?: string;
   libraryVans?: {
     libraryVanId: ObjectId;

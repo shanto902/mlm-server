@@ -33,7 +33,24 @@ const createAdmin = catchAsync(async (req, res) => {
   });
 });
 
+const createCustomer = catchAsync(async (req, res) => {
+  const { password, customer: customerData } = req.body;
+
+  const result = await UserServices.createCustomerIntoDB(
+    password,
+    customerData,
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.CREATED,
+    message: 'Customer created successfully',
+    data: result,
+  });
+});
+
 export const UserControllers = {
   createLibrarian,
   createAdmin,
+  createCustomer,
 };

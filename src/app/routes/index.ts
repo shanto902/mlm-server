@@ -6,9 +6,11 @@ import { LibraryVanRoute } from '../modules/libraryVan/libraryVan.route';
 import { CategoryRoute } from '../modules/category/category.route';
 import { AdminRoute } from '../modules/admin/admin.route';
 import { CustomerRoute } from '../modules/customer/customer.route';
+import { AuthRouter } from '../modules/auth/auth.route';
 
 type TModuleRoute = {
   path: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   route: any;
 };
 const router = Router();
@@ -42,6 +44,10 @@ const moduleRoutes: TModuleRoute[] = [
   {
     path: '/category',
     route: CategoryRoute,
+  },
+  {
+    path: '/auth',
+    route: AuthRouter,
   },
 ];
 

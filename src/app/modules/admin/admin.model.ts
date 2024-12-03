@@ -95,11 +95,11 @@ adminSchema.statics.isUserExist = async function (id: string) {
 };
 
 adminSchema.pre('save', async function (next) {
-  const isAdminExist = await AdminModel.findOne({
+  const isEmailExists = await AdminModel.findOne({
     email: this.email,
   });
 
-  if (isAdminExist) {
+  if (isEmailExists) {
     throw new AppError(StatusCodes.FORBIDDEN, 'This email already used');
   }
   next();
