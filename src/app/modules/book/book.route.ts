@@ -12,7 +12,11 @@ router.post(
   validateRequest(BookValidations.bookValidationSchema),
   BookControllers.addBook,
 );
-router.get('/', auth(USER_ROLE.admin), BookControllers.getAllBooks);
+router.get(
+  '/',
+  auth(USER_ROLE.admin, USER_ROLE.member),
+  BookControllers.getAllBooks,
+);
 router.get('/:bookId', BookControllers.getSingleBook);
 router.delete('/:bookId', BookControllers.deleteBook);
 

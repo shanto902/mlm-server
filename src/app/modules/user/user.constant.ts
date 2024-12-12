@@ -1,5 +1,5 @@
 export const USER_ROLE = {
   admin: 'admin',
   librarian: 'librarian',
-  customer: 'customer',
+  member: 'member',
 } as const;

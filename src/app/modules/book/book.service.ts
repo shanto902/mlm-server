@@ -1,5 +1,5 @@
 import QueryBuilder from '../../builder/queryBuilder';
-import { bookSearchableField } from './book.constant';
+import { bookSearchableFields } from './book.constant';
 import { TBook } from './book.interface';
 import { BookModel } from './book.model';
 
@@ -17,14 +17,18 @@ const getAllBooksFromDB = async (query: Record<string, unknown>) => {
       .populate('libraryVans.libraryVanId'),
     query,
   )
-    .search(bookSearchableField)
+    .search(bookSearchableFields)
     .filter()
     .sort()
     .paginate()
     .fields();
 
+  const meta = await bookQuery.countTotal;
   const result = await bookQuery.modelQuery;
-  return result;
+  return {
+    meta,
+    result,
+  };
 };
 
 const getSingleBookFromDb = async (id: string) => {

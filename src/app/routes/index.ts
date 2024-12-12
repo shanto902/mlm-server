@@ -5,7 +5,7 @@ import { BookRoutes } from '../modules/book/book.route';
 import { LibraryVanRoute } from '../modules/libraryVan/libraryVan.route';
 import { CategoryRoute } from '../modules/category/category.route';
 import { AdminRoute } from '../modules/admin/admin.route';
-import { CustomerRoute } from '../modules/customer/customer.route';
+import { MemberRoute } from '../modules/member/member.route';
 import { AuthRouter } from '../modules/auth/auth.route';
 
 type TModuleRoute = {
@@ -30,8 +30,8 @@ const moduleRoutes: TModuleRoute[] = [
   },
 
   {
-    path: '/customer',
-    route: CustomerRoute,
+    path: '/member',
+    route: MemberRoute,
   },
   {
     path: '/book',

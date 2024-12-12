@@ -10,8 +10,8 @@ import { StatusCodes } from 'http-status-codes';
 import generateUniqueId from '../../utils/generateUniqueId';
 import { TAdmin } from '../admin/admin.interface';
 import { AdminModel } from '../admin/admin.model';
-import { TCustomer } from '../customer/customer.interface';
-import { CustomerModel } from '../customer/customer.model';
+import { TMember } from '../member/member.interface';
+import { MemberModel } from '../member/member.model';
 
 const createLibrarianIntoDB = async (password: string, payload: TLibrarian) => {
   const userData: Partial<IUser> = {};
@@ -89,12 +89,12 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
   }
 };
 
-const createCustomerIntoDB = async (password: string, payload: TCustomer) => {
+const createMemberIntoDB = async (password: string, payload: TMember) => {
   const userData: Partial<IUser> = {};
   userData.password = password || (config.default_password as string);
   userData.email = payload.email;
-  // set Customer role
-  userData.role = 'customer';
+  // set Member role
+  userData.role = 'member';
   const session = await mongoose.startSession();
   try {
     await session.startTransaction();
@@ -108,14 +108,14 @@ const createCustomerIntoDB = async (password: string, payload: TCustomer) => {
 
     payload.id = newUser[0].id;
     payload.user = newUser[0]._id;
-    const newCustomer = await CustomerModel.create([payload], { session });
-    if (!newCustomer.length) {
-      throw new AppError(StatusCodes.BAD_REQUEST, 'Failed to create Customer');
+    const newMember = await MemberModel.create([payload], { session });
+    if (!newMember.length) {
+      throw new AppError(StatusCodes.BAD_REQUEST, 'Failed to create Member');
     }
     await session.commitTransaction();
     await session.endSession();
 
-    return newCustomer;
+    return newMember;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     await session.abortTransaction();
@@ -126,5 +126,5 @@ const createCustomerIntoDB = async (password: string, payload: TCustomer) => {
 export const UserServices = {
   createLibrarianIntoDB,
   createAdminIntoDB,
-  createCustomerIntoDB,
+  createMemberIntoDB,
 };

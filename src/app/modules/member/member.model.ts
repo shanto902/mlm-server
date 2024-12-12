@@ -2,8 +2,8 @@ import { model, Schema } from 'mongoose';
 import AppError from '../../errors/appError';
 import { StatusCodes } from 'http-status-codes';
 import { TName } from '../librarian/librarian.interface';
-import { TCustomer } from './customer.interface';
-const customerNameSchema = new Schema<TName>(
+import { TMember } from './member.interface';
+const memberNameSchema = new Schema<TName>(
   {
     firstName: {
       type: String,
@@ -24,7 +24,7 @@ const customerNameSchema = new Schema<TName>(
   { _id: false },
 );
 
-const customerSchema = new Schema<TCustomer>(
+const memberSchema = new Schema<TMember>(
   {
     id: { type: String, required: true, unique: true },
     nid: { type: String, unique: true },
@@ -35,7 +35,7 @@ const customerSchema = new Schema<TCustomer>(
       ref: 'User',
     },
     name: {
-      type: customerNameSchema,
+      type: memberNameSchema,
       required: [true, 'Name is Required'],
     },
     gender: {
@@ -89,30 +89,30 @@ const customerSchema = new Schema<TCustomer>(
 
 // Custom Static Method
 
-customerSchema.statics.isUserExist = async function (id: string) {
-  const existingUser = await CustomerModel.findOne({ id });
+memberSchema.statics.isUserExist = async function (id: string) {
+  const existingUser = await MemberModel.findOne({ id });
   return existingUser;
 };
 
-customerSchema.pre('save', async function (next) {
-  const isCustomerExists = await CustomerModel.findOne({
+memberSchema.pre('save', async function (next) {
+  const isMemberExists = await MemberModel.findOne({
     email: this.email,
   });
 
-  if (isCustomerExists) {
+  if (isMemberExists) {
     throw new AppError(StatusCodes.FORBIDDEN, 'This email already used');
   }
   next();
 });
 
 //Filtering deleted accounts
-customerSchema.pre('find', function (next) {
+memberSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
 
-customerSchema.virtual('fullName').get(function () {
+memberSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName || ''} ${this.name.lastName}`;
 });
 
-export const CustomerModel = model<TCustomer>('Customer', customerSchema);
+export const MemberModel = model<TMember>('Member', memberSchema);

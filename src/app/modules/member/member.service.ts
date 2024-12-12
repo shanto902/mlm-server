@@ -2,27 +2,27 @@ import mongoose from 'mongoose';
 import AppError from '../../errors/appError';
 import { StatusCodes } from 'http-status-codes';
 import { UserModel } from '../user/user.model';
-import { TCustomer } from './customer.interface';
-import { CustomerModel } from './customer.model';
+import { TMember } from './member.interface';
+import { MemberModel } from './member.model';
 
-const getAllCustomersFromDB = async () => {
-  const result = await CustomerModel.find();
+const getAllMembersFromDB = async () => {
+  const result = await MemberModel.find();
   return result;
 };
 
-const getSingleCustomerFromDB = async (id: string) => {
-  const result = await CustomerModel.findOne({ id });
+const getSingleMemberFromDB = async (id: string) => {
+  const result = await MemberModel.findOne({ id });
   if (!result) {
     throw new AppError(StatusCodes.NOT_FOUND, 'Id not found');
   }
   return result;
 };
 
-const deleteCustomerFromDB = async (id: string) => {
+const deleteMemberFromDB = async (id: string) => {
   const session = await mongoose.startSession();
   try {
     await session.startTransaction();
-    const deletedCustomer = await CustomerModel.findOneAndUpdate(
+    const deletedMember = await MemberModel.findOneAndUpdate(
       { id },
       { isDeleted: true },
       {
@@ -31,8 +31,8 @@ const deleteCustomerFromDB = async (id: string) => {
       },
     );
 
-    if (!deletedCustomer) {
-      throw new AppError(StatusCodes.BAD_REQUEST, 'Failed to delete customer');
+    if (!deletedMember) {
+      throw new AppError(StatusCodes.BAD_REQUEST, 'Failed to delete Member');
     }
 
     const deletedUser = await UserModel.findOneAndUpdate(
@@ -51,7 +51,7 @@ const deleteCustomerFromDB = async (id: string) => {
     await session.commitTransaction();
     await session.endSession();
 
-    return deletedCustomer;
+    return deletedMember;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     await session.abortTransaction();
@@ -60,14 +60,11 @@ const deleteCustomerFromDB = async (id: string) => {
   }
 };
 
-const updateCustomerFromDB = async (
-  id: string,
-  payload: Partial<TCustomer>,
-) => {
-  const { name, ...remainingCustomerData } = payload;
+const updateMemberFromDB = async (id: string, payload: Partial<TMember>) => {
+  const { name, ...remainingMemberData } = payload;
 
   const modifiedUpdatedData: Record<string, unknown> = {
-    ...remainingCustomerData,
+    ...remainingMemberData,
   };
 
   if (name && Object.keys(name).length) {
@@ -75,7 +72,7 @@ const updateCustomerFromDB = async (
       modifiedUpdatedData[`name.${key}`] = value;
     }
   }
-  const result = await CustomerModel.findOneAndUpdate(
+  const result = await MemberModel.findOneAndUpdate(
     { id },
     modifiedUpdatedData,
     {
@@ -87,14 +84,14 @@ const updateCustomerFromDB = async (
   if (!result) {
     throw new AppError(
       StatusCodes.NOT_FOUND,
-      'Customer not found with the given ID',
+      'Member not found with the given ID',
     );
   }
   return result;
 };
-export const CustomerServices = {
-  getAllCustomersFromDB,
-  getSingleCustomerFromDB,
-  deleteCustomerFromDB,
-  updateCustomerFromDB,
+export const MemberServices = {
+  getAllMembersFromDB,
+  getSingleMemberFromDB,
+  deleteMemberFromDB,
+  updateMemberFromDB,
 };

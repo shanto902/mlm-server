@@ -8,10 +8,10 @@ const nameValidationSchema = z.object({
 });
 
 // Define the librarian schema
-const createCustomerValidationSchema = z.object({
+const createMemberValidationSchema = z.object({
   body: z.object({
     password: z.string().max(20),
-    customer: z.object({
+    member: z.object({
       name: nameValidationSchema,
       gender: z
         .enum(['male', 'female', 'other'], {
@@ -72,7 +72,7 @@ const updateLibrarianValidationSchema = z.object({
   }),
 });
 
-export const CustomerValidations = {
-  createCustomerValidationSchema,
+export const MemberValidations = {
+  createMemberValidationSchema,
   updateLibrarianValidationSchema,
 };

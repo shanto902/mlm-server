@@ -6,7 +6,7 @@ export type TName = {
   lastName: string;
 };
 
-export type TCustomer = {
+export type TMember = {
   id: string;
   nid: string;
   user: Types.ObjectId;

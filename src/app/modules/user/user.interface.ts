@@ -6,7 +6,7 @@ export interface IUser {
   password: string;
   needsPasswordChange: boolean;
   email: string;
-  role: 'admin' | 'librarian' | 'customer';
+  role: 'admin' | 'librarian' | 'member';
   isDeleted: boolean;
   status: 'in-progress' | 'blocked';
   passwordChangedAt?: Date;
