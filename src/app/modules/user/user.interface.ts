@@ -9,6 +9,7 @@ export interface IUser {
   role: 'admin' | 'librarian' | 'customer';
   isDeleted: boolean;
   status: 'in-progress' | 'blocked';
+  passwordChangedAt?: Date;
 }
 
 export interface UserFunctions extends Model<IUser> {
@@ -17,6 +18,10 @@ export interface UserFunctions extends Model<IUser> {
     plainTextPassword: string,
     hashedPassword: string,
   ): Promise<boolean>;
+  isJWTIssuedBeforePasswordChanged(
+    passwordChangedTimestamp: Date,
+    jwtIssuedTimestamp: number,
+  ): boolean;
 }
 
 export type TUserRole = keyof typeof USER_ROLE;
