@@ -18,7 +18,7 @@ const bookSchema = new Schema<TBook>(
       },
     ],
     price: { type: Number, required: true, min: 0 },
-    publishedYear: { type: Number, default: null },
+    publishedYear: { type: String, default: null },
     ISBN: { type: String, unique: true },
     language: { type: String, default: 'English' },
     isDeleted: { type: Boolean, default: false },

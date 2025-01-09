@@ -6,8 +6,9 @@ import { StatusCodes } from 'http-status-codes';
 
 const createLibrarian = catchAsync(async (req, res) => {
   const { password, librarian: librarianData } = req.body;
-
+  console.log(req.body);
   const result = await UserServices.createLibrarianIntoDB(
+    req.file,
     password,
     librarianData,
   );

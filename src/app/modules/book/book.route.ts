@@ -8,16 +8,17 @@ import { USER_ROLE } from '../user/user.constant';
 const router = express.Router();
 
 router.post(
-  '/add-book',
+  '/',
   validateRequest(BookValidations.bookValidationSchema),
+  auth(USER_ROLE.librarian, USER_ROLE.admin),
   BookControllers.addBook,
 );
-router.get(
-  '/',
-  auth(USER_ROLE.admin, USER_ROLE.member),
-  BookControllers.getAllBooks,
-);
+router.get('/', BookControllers.getAllBooks);
 router.get('/:bookId', BookControllers.getSingleBook);
-router.delete('/:bookId', BookControllers.deleteBook);
+router.delete(
+  '/:bookId',
+  auth(USER_ROLE.librarian, USER_ROLE.admin),
+  BookControllers.deleteBook,
+);
 
 export const BookRoutes = router;

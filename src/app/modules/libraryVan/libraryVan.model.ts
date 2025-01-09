@@ -14,7 +14,7 @@ const libraryVanSchema = new Schema<TLibraryVan>(
         latitude: { type: Number, required: true },
         longitude: { type: Number, required: true },
       },
-      required: false, // Location is optional
+      required: false,
     },
     locationUpdatedAt: {
       type: Date,

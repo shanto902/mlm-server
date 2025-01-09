@@ -10,7 +10,7 @@ router.post(
   validateRequest(LibraryVanValidations.createLibraryVanValidationSchema),
   LibraryVanControllers.addLibraryVan,
 );
-// router.get('/all-vans', LibrarianController.getSingleLibrarian);
+router.get('/', LibraryVanControllers.getAllVans);
 // router.get('/:vanId', LibrarianController.deleteLibrarian);
 // router.get('/:vanId', LibrarianController.deleteLibrarian);
 // router.post('/updateLocation');

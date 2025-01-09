@@ -23,7 +23,8 @@ const getAllBooksFromDB = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
-  const meta = await bookQuery.countTotal;
+  const meta = await bookQuery.countTotal();
+
   const result = await bookQuery.modelQuery;
   return {
     meta,

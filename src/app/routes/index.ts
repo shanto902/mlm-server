@@ -17,32 +17,32 @@ const router = Router();
 
 const moduleRoutes: TModuleRoute[] = [
   {
-    path: '/user',
+    path: '/users',
     route: UserRoutes,
   },
   {
-    path: '/librarian',
+    path: '/librarians',
     route: LibrarianRoute,
   },
   {
-    path: '/admin',
+    path: '/admins',
     route: AdminRoute,
   },
 
   {
-    path: '/member',
+    path: '/members',
     route: MemberRoute,
   },
   {
-    path: '/book',
+    path: '/books',
     route: BookRoutes,
   },
   {
-    path: '/library-van',
+    path: '/library-vans',
     route: LibraryVanRoute,
   },
   {
-    path: '/category',
+    path: '/categories',
     route: CategoryRoute,
   },
   {

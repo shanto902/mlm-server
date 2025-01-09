@@ -21,7 +21,7 @@ const bookValidationSchema = z.object({
       .number()
       .min(0, 'Price must be greater than or equal to 0')
       .positive('Price must be a positive number'),
-    publishedYear: z.number().optional(),
+    publishedYear: z.string().optional(),
     ISBN: z.string().optional(),
     language: z.string().optional(),
   }),

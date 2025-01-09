@@ -10,7 +10,7 @@ const nameValidationSchema = z.object({
 // Define the librarian schema
 const createLibrarianValidationSchema = z.object({
   body: z.object({
-    password: z.string().max(20),
+    password: z.string().max(20).optional(),
     librarian: z.object({
       name: nameValidationSchema,
       gender: z
@@ -32,7 +32,7 @@ const createLibrarianValidationSchema = z.object({
         .min(1, 'Permanent Address is Required')
         .trim(),
       presentAddress: z.string().min(1, 'Present Address is Required').trim(),
-      profileImg: z.string(),
+      profileImg: z.string().optional(),
     }),
   }),
 });

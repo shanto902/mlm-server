@@ -8,6 +8,12 @@ const addLibraryVanIntoDb = async (payload: TLibraryVan) => {
   return newVan;
 };
 
+const getAllVansFromDB = async () => {
+  const result = await LibraryVanModel.find();
+  return result;
+};
+
 export const LibraryVanServices = {
   addLibraryVanIntoDb,
+  getAllVansFromDB,
 };

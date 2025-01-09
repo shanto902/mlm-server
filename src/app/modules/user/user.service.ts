@@ -12,8 +12,13 @@ import { TAdmin } from '../admin/admin.interface';
 import { AdminModel } from '../admin/admin.model';
 import { TMember } from '../member/member.interface';
 import { MemberModel } from '../member/member.model';
+import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
 
-const createLibrarianIntoDB = async (password: string, payload: TLibrarian) => {
+const createLibrarianIntoDB = async (
+  file: any,
+  password: string,
+  payload: TLibrarian,
+) => {
   const userData: Partial<IUser> = {};
   //  if password is not given, use default password
   userData.password = password || (config.default_password as string);
@@ -27,6 +32,16 @@ const createLibrarianIntoDB = async (password: string, payload: TLibrarian) => {
 
     userData.id = await generateUniqueId(userData.role as string);
     // create a user
+
+    if (file) {
+      const imageName = `${userData.id}${payload?.name?.firstName}`;
+      const path = file?.path;
+
+      //send image to cloudinary
+      const { secure_url } = await sendImageToCloudinary(imageName, path);
+      payload.profileImg = secure_url as string;
+    }
+
     const newUser = await UserModel.create([userData], { session });
     if (!newUser.length) {
       throw new AppError(StatusCodes.BAD_REQUEST, 'Failed to create user');
